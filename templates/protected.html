@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Protected Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .error {
+            color: red;
+            margin-top: 20px;
+        }
+        .form-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the protected page!</h1>
+    <h2>List of Passwords</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Site</th>
+                <th>Login</th>
+                <th>Password</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for password in passwords %}
+                <tr>
+                    <td>{{ password.site }}</td>
+                    <td>{{ password.login }}</td>
+                    <td>{{ password.password }}</td>
+                    <td>
+                        <form method="POST" action="/delete_password" style="display:inline;">
+                            <input type="hidden" name="id" value="{{ password.id }}">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="form-container">
+        <h2>Add a new password</h2>
+        <form method="POST" action="/protected">
+            <label for="site">Site:</label>
+            <input type="text" id="site" name="site">
+            <label for="login">Login:</label>
+            <input type="text" id="login" name="login">
+            <label for="password">Password:</label>
+            <input type="text" id="password" name="password">
+            <button type="submit">Add</button>
+        </form>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
